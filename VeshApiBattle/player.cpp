@@ -32,4 +32,5 @@ void Player::CreateObject(int id)
 void Player::AddObject(Object* o)
 {
 	objects.push_back(o);
+	creationObjects.push_back(o);
 }

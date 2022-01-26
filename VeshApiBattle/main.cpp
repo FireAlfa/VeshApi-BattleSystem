@@ -8,6 +8,8 @@
 
 
 
+int CalculateStarter(Battle* b );
+
 void main()
 {
 	// ----- Variables -----
@@ -16,13 +18,15 @@ void main()
 	char characterChoice = 'a';
 	char itemChoice = 'a';
 	int battleChoice = 0;
+	bool battleHasFinished = false;
+	bool emulatorEnd = false;
 	std::vector<Battle*> battles;
 	// --------------------------------------------------
 
 
 
 	// ----- CREATE THE PLAYER'S PARTY -----
-	printf_s("\n\n----- Create your party ----- \n\n");
+	printf_s("\n----- Create your party ----- \n\n");
 	printf_s("Enter your name: ");
 	std::string pName;
 	std::cin >> pName;
@@ -30,8 +34,9 @@ void main()
 	while (charactersCreated < 3 && characterChoice != 'n')
 	{
 		CharacterInfo cI;
+		characterChoice = 'a';
 
-		printf_s("Character %d Info: \n", charactersCreated + 1);
+		printf_s("\nCharacter %d Info \n", charactersCreated + 1);
 		printf_s("Name: ");
 		std::cin >> cI.name;
 		printf_s("HP: ");
@@ -48,7 +53,7 @@ void main()
 		player->CreateCharacter(cI);
 		cI.Reset();
 
-		while (characterChoice != 'y' && characterChoice != 'n')
+		while (characterChoice != 'y' && characterChoice != 'n' && charactersCreated < 3)
 		{
 			printf_s("You can have up to 3 characters in a party, do you want to create another one? (y/n)  ");
 			std::cin >> characterChoice;
@@ -59,7 +64,7 @@ void main()
 		}
 	}
 	printf_s("\n");
-	while (itemChoice != 'n')
+	while (itemChoice != 'y')
 	{
 		printf_s("\Does your party have any items? (y/n)  ");
 		std::cin >> itemChoice;
@@ -104,36 +109,178 @@ void main()
 
 
 	// ----- CHOOSE WHAT BATTLE TO TEST -----
-	while (battleChoice == 0)
-	{
-		if (e == true)
+	do {
+		while (battleChoice == 0)
 		{
-			printf_s("Choose a valid number! \n\n");
-			e = false;
-		}
-		printf_s("What Battle do you want to simulate?\n");
-		for (int i = 0; i < battles.size(); i++)
-		{
-			printf_s("%d.- %s\n", i + 1, battles.at(i)->GetName().c_str());
-		}
-		scanf_s("%d", &battleChoice);
+			system("cls");
 
-		if (battleChoice > battles.size() || battleChoice == 0)
-		{
-			battleChoice = 0;
-			e = true;
-		}
+			if (e == true)
+			{
+				printf_s("Choose a valid number! \n\n");
+				e = false;
+			}
+			printf_s("\n\n ----- What Battle do you want to simulate? -----\n");
+			for (int i = 0; i < battles.size(); i++)
+			{
+				printf_s("%d.- %s\n", i + 1, battles.at(i)->GetName().c_str());
+			}
+			scanf_s("%d", &battleChoice);
 
+			if (battleChoice > battles.size() || battleChoice == 0)
+			{
+				battleChoice = 0;
+				e = true;
+			}
+		}
+		// --------------------------------------------------
+
+
+
+		// ----- BATTLE EMULATION -----
+		battleChoice--;
+		int starter = CalculateStarter(battles.at(battleChoice));
+		do {
+			system("cls");
+
+			// ----- DRAW TEAMS -----
+			printf(" ===========  Enemy Team  ===========");
+			if (starter == 1)
+			{
+				printf("      This player starts");
+			}
+			printf("\n");
+			for (int i = 0; i < battles.at(battleChoice)->GetEnemy()->GetCharacters().size(); i++)
+			{
+				printf("   %s   ", battles.at(battleChoice)->GetEnemy()->GetCharacterAt(i)->GetName().c_str());
+			}
+			printf("\n");
+			for (int i = 0; i < battles.at(battleChoice)->GetEnemy()->GetCharacters().size(); i++)
+			{
+				printf("   %d HP     ", battles.at(battleChoice)->GetEnemy()->GetCharacterAt(i)->GetHP());
+			}
+			printf("\n");
+			for (int i = 0; i < battles.at(battleChoice)->GetEnemy()->GetCharacters().size(); i++)
+			{
+				printf("   %d ATK     ", battles.at(battleChoice)->GetEnemy()->GetCharacterAt(i)->GetATK());
+			}
+			printf("\n");
+			for (int i = 0; i < battles.at(battleChoice)->GetEnemy()->GetCharacters().size(); i++)
+			{
+				printf("   %d DEF     ", battles.at(battleChoice)->GetEnemy()->GetCharacterAt(i)->GetDEF());
+			}
+			printf("\n\n\n\n\n\n");
+			for (int i = 0; i < battles.at(battleChoice)->GetPlayer()->GetCharacters().size(); i++)
+			{
+				printf("   %s   ", battles.at(battleChoice)->GetPlayer()->GetCharacterAt(i)->GetName().c_str());
+			}
+			printf("\n");
+			for (int i = 0; i < battles.at(battleChoice)->GetPlayer()->GetCharacters().size(); i++)
+			{
+				printf("   %d HP     ", battles.at(battleChoice)->GetPlayer()->GetCharacterAt(i)->GetHP());
+			}
+			printf("\n");
+			for (int i = 0; i < battles.at(battleChoice)->GetPlayer()->GetCharacters().size(); i++)
+			{
+				printf("   %d ATK     ", battles.at(battleChoice)->GetPlayer()->GetCharacterAt(i)->GetATK());
+			}
+			printf("\n");
+			for (int i = 0; i < battles.at(battleChoice)->GetPlayer()->GetCharacters().size(); i++)
+			{
+				printf("   %d DEF     ", battles.at(battleChoice)->GetPlayer()->GetCharacterAt(i)->GetDEF());
+			}
+			printf("\n ===========  %s's Team  ===========", battles.at(battleChoice)->GetPlayer()->GetName().c_str());
+			if (starter == 0)
+			{
+				printf("      This player starts");
+			}
+			printf("\n");
+			printf("Objects in inventory: |");
+			for (int i = 0; i < battles.at(battleChoice)->GetPlayer()->GetObjects().size(); i++)
+			{
+				printf(" (%d) %s |", battles.at(battleChoice)->GetPlayer()->GetObjects().at(i)->GetID(), battles.at(battleChoice)->GetPlayer()->GetObjects().at(i)->GetName().c_str());
+			}
+			printf("\n\n");
+			// -------------------------
+
+
+			// ----- CHOOSE ACTION -----
+			printf("Actions:\n");
+			printf("1.- Attack\n");
+			printf("2.- Use Object\n");
+			printf("3.- Run\n");
+			int o = 0;
+			while (o != 1 && o != 2 && o != 3)
+			{
+				std::cin >> o;
+			}
+
+			switch (o)
+			{
+			case 1:
+				break;
+			case 2:
+
+				break;
+			case 3:
+				battleHasFinished = true;
+				printf("\nYou finished the battle.\n");
+				system("pause");
+				break;
+			default:
+				break;
+			}
+			// -------------------------
+
+		} while (!battleHasFinished);
+		// --------------------------------------------------
+		
+		
+		battles.at(battleChoice)->GetPlayer()->ResetPlayer();
+		battles.at(battleChoice)->GetEnemy()->ResetPlayer();
 		system("cls");
-	}
-	// --------------------------------------------------
+		while (characterChoice != 'y' && characterChoice != 'n')
+		{
+			printf("\nDo you want to emulate another battle? (y/n)  ");
+			std::cin >> characterChoice;
+			if (characterChoice != 'y' && characterChoice != 'n')
+			{
+				printf_s("Enter a valid option.\n");
+			}
+			if (characterChoice == 'y')
+			{
+				emulatorEnd = true;
+			}
+		}
 
-
-
-	// ----- BATTLE EMULATION -----
-
-	// --------------------------------------------------
-
+	} while (!emulatorEnd);
 
 	system("pause");
+}
+
+
+// Returns 0 if the player starts and 1 if the enemy starts
+int CalculateStarter(Battle* b)
+{
+	// Total player Speed
+	int pSPD = 0;
+	for (int i = 0; i < b->GetPlayer()->GetCharacters().size(); i++)
+	{
+		pSPD += b->GetPlayer()->GetCharacterAt(i)->GetSPD();
+	}
+
+	// Total enemy Speed
+	int eSPD = 0;
+	for (int i = 0; i < b->GetEnemy()->GetCharacters().size(); i++)
+	{
+		eSPD += b->GetEnemy()->GetCharacterAt(i)->GetSPD();
+	}
+
+	if (pSPD >= eSPD)
+	{
+		return 0;
+	}
+	else
+	{
+		return 1;
+	}
 }

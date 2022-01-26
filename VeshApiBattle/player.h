@@ -15,6 +15,14 @@ public:
 	void CreateCharacter(CharacterInfo cI);
 	void CreateObject(int id);
 
+	void ResetPlayer() { characters = creationCharacters; objects = creationObjects; };
+
+	// Getters
+	Character* GetCharacterAt(int i) { return characters.at(i); };
+	std::vector<Character*> GetCharacters() { return characters; };
+	std::vector<Object*> GetObjects() { return objects; };
+	std::string GetName() { return name; };
+
 private:
 
 	void AddCharacter(Character* c);
@@ -24,5 +32,7 @@ private:
 
 	std::string name;
 	std::vector<Character*> characters;
+	std::vector<Character*> creationCharacters;
 	std::vector<Object*> objects;
+	std::vector<Object*> creationObjects;
 };

@@ -25,5 +25,11 @@ void Player::AddCharacter(Character* c)
 
 void Player::CreateObject(int id)
 {
+	Object* o = new Object(id);
 
+	AddObject(o);
+}
+void Player::AddObject(Object* o)
+{
+	objects.push_back(o);
 }

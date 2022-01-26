@@ -37,6 +37,20 @@ public:
 	}
 	~Character() {}
 
+	// Getters
+	std::string GetName() { return cInfo.name; };
+	int GetHP() { return cInfo.hp; };
+	int GetATK() { return cInfo.atk; };
+	int GetDEF() { return cInfo.def; };
+	int GetSPD() { return cInfo.spd; };
+
+	// Setters
+	void SetName(std::string n) { cInfo.name = n; };
+	void SetHP(int v) { cInfo.hp = v; };
+	void SetATK(int v) { cInfo.atk = v; };
+	void SetDEF(int v) { cInfo.def = v; };
+	void SetSPD(int v) { cInfo.spd = v; };
+
 public:
 
 	CharacterStatus status = CharacterStatus::RESTED;

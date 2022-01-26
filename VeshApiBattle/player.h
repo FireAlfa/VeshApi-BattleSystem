@@ -13,7 +13,7 @@ public:
 	~Player();
 
 	void CreateCharacter(CharacterInfo cI);
-	void CreateObject(int id;
+	void CreateObject(int id);
 
 private:
 

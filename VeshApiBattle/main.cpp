@@ -10,13 +10,15 @@
 
 void main()
 {
-	// Variables
+	// ----- Variables -----
 	bool e = false;
 	int charactersCreated = 0;
 	char characterChoice = 'a';
 	char itemChoice = 'a';
 	int battleChoice = 0;
 	std::vector<Battle*> battles;
+	// --------------------------------------------------
+
 
 
 	// ----- CREATE THE PLAYER'S PARTY -----
@@ -79,19 +81,23 @@ void main()
 			printf_s("Enter a valid option.\n");
 		}
 	}
-	
-
 	// --------------------------------------------------
 
 
 
-	// ----- CREATE ALL BATTLES -----
+	// ----- CREATE ALL BATTLES  !!!MANUALLY!!! -----
 	// First we add the new battle to the vector
 	battles.push_back(new Battle("Battle 1"));
+	// We add the player we just created
+	battles.at(0)->AddPlayer(player);
 	//Then we create the enemy team
 	battles.at(0)->CreateEnemy("Enemy");
-	// We then add the needed characters for the enemy
+	// We then add the needed characters for the enemy party
 	CharacterInfo cI = { "Enemy 1", 10, 2, 1, 2 };
+	battles.at(0)->GetEnemy()->CreateCharacter(cI);
+	cI = { "Enemy 2", 10, 2, 1, 2 };
+	battles.at(0)->GetEnemy()->CreateCharacter(cI);
+	cI = { "Enemy 3", 10, 2, 1, 2 };
 	battles.at(0)->GetEnemy()->CreateCharacter(cI);
 	// --------------------------------------------------
 
@@ -122,12 +128,12 @@ void main()
 	}
 	// --------------------------------------------------
 
+
+
+	// ----- BATTLE EMULATION -----
+
+	// --------------------------------------------------
+
+
 	system("pause");
-}
-
-
-void CreateBattles(std::vector<Battle*> )
-{
-
-
 }

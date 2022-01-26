@@ -216,16 +216,41 @@ void main()
 
 			switch (o)
 			{
-			case 1:
+			case 1: // Attack
+			{
 				break;
-			case 2:
+			}
+			case 2: // Use Object
+			{
+				int obj = 0;
+				printf("\n Choose what object to use: ");
+				while (obj <= 0 || obj > battles.at(battleChoice)->GetPlayer()->GetObjects().size() + 1)
+				{
+					std::cin >> obj;
+				}
+				printf("Object seleted: (%d) %s", obj, battles.at(battleChoice)->GetPlayer()->GetObjects().at(obj - 1)->GetName().c_str());
+				printf("Select a target: ( ");
+				for (int i = 0; i < battles.at(battleChoice)->GetPlayer()->GetCharacters().size(); i++)
+				{
+					printf("%d ", i + 1);
+				}
+				printf(")  ");
+				int target = 0;
+				while (target <= 0 || target > battles.at(battleChoice)->GetPlayer()->GetCharacters().size())
+				{
+					std::cin >> target;
+				}
+				battles.at(battleChoice)->GetPlayer()->GetCharacterAt(target - 1)->ApplyEffect(battles.at(battleChoice)->GetPlayer()->GetObjects().at(obj - 1)->GetEffect());
 
 				break;
-			case 3:
+			}
+			case 3: // Run
+			{
 				battleHasFinished = true;
 				printf("\nYou finished the battle.\n");
 				system("pause");
 				break;
+			}
 			default:
 				break;
 			}

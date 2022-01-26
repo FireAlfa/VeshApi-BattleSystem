@@ -7,12 +7,12 @@
 
 struct CharacterInfo
 {
-	std::string name;
-	int hp, atk, def, spd;
+	std::string name = "EmptyChar";
+	float hp = 0, atk = 0, def = 0, spd = 0;
 
 	void Reset()
 	{
-		name = " ";
+		name = "EmptyChar";
 		hp = 0;
 		atk = 0;
 		def = 0;
@@ -45,6 +45,13 @@ public:
 	int GetSPD() { return cInfo.spd; };
 
 	// Setters
+	void ApplyEffect(float4 effect)
+	{
+		cInfo.hp += effect.x;
+		cInfo.atk += effect.y;
+		cInfo.def += effect.z;
+		cInfo.spd += effect.w;
+	}
 	void SetName(std::string n) { cInfo.name = n; };
 	void SetHP(int v) { cInfo.hp = v; };
 	void SetATK(int v) { cInfo.atk = v; };

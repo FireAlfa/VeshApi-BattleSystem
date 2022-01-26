@@ -47,10 +47,16 @@ public:
 	// Setters
 	void ApplyEffect(float4 effect)
 	{
-		cInfo.hp += effect.x;
-		cInfo.atk += effect.y;
-		cInfo.def += effect.z;
-		cInfo.spd += effect.w;
+		cInfo.hp += (int)effect.x;
+		cInfo.atk += (int)effect.y;
+		cInfo.def += (int)effect.z;
+		cInfo.spd += (int)effect.w;
+	}
+	void ReceiveDamage(int dmg)
+	{
+		dmg -= cInfo.def;
+		if (dmg > 0)
+			cInfo.hp -= dmg;
 	}
 	void SetName(std::string n) { cInfo.name = n; };
 	void SetHP(int v) { cInfo.hp = v; };

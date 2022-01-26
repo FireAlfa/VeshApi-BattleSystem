@@ -218,6 +218,30 @@ void main()
 			{
 			case 1: // Attack
 			{
+				int attacker = 0;
+				printf("Select an attacker: ( ");
+				for (int i = 0; i < battles.at(battleChoice)->GetPlayer()->GetCharacters().size(); i++)
+				{
+					printf("%d ", i + 1);
+				}
+				while (attacker <= 0 || attacker > battles.at(battleChoice)->GetPlayer()->GetCharacters().size() + 1)
+				{
+					std::cin >> attacker;
+				}
+				printf("Attacker selected: %s\n", battles.at(battleChoice)->GetPlayer()->GetCharacterAt(attacker - 1)->GetName().c_str());
+				printf("Select a target: ( ");
+				for (int i = 0; i < battles.at(battleChoice)->GetEnemy()->GetCharacters().size(); i++)
+				{
+					printf("%d ", i + 1);
+				}
+				printf(")  ");
+				int target = 0;
+				while (target <= 0 || target > battles.at(battleChoice)->GetPlayer()->GetCharacters().size() + 1)
+				{
+					std::cin >> target;
+				}
+				battles.at(battleChoice)->GetEnemy()->GetCharacterAt(target - 1)->ReceiveDamage(battles.at(battleChoice)->GetPlayer()->GetCharacterAt(attacker - 1)->GetATK());
+
 				break;
 			}
 			case 2: // Use Object

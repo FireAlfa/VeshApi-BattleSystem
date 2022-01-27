@@ -12,7 +12,7 @@ Object::Object(int _id) : id(_id)
 	{
 	case 1:
 		name = "Item1";
-		effect = { 0.0f, 0.0f, 0.0f, 0.0f };
+		effect = { 2.0f, 0.0f, 0.0f, 0.0f };
 		break;
 	case 2:
 		name = "Item2";

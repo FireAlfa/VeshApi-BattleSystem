@@ -2,8 +2,11 @@
 
 #include <string>
 #include <vector>
+#include <WindowsNumerics.h>
 
 
+
+using namespace Windows::Foundation::Numerics;
 
 struct CharacterInfo
 {

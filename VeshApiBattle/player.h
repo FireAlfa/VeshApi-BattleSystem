@@ -14,6 +14,7 @@ public:
 
 	void CreateCharacter(CharacterInfo cI);
 	void CreateObject(int id);
+	void RemoveObject(int i);
 
 	void ResetPlayer() { characters = creationCharacters; objects = creationObjects; };
 

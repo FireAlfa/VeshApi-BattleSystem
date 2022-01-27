@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <iostream>
 #include <vector>
-#include <vector>
 
 
 
@@ -40,18 +39,18 @@ void main()
 		printf_s("Name: ");
 		std::cin >> cI.name;
 		printf_s("HP: ");
-		scanf_s("%d", &cI.hp);
+		std::cin >> cI.hp;
 		printf_s("ATK: ");
-		scanf_s("%d", &cI.atk);
+		std::cin >> cI.atk;
 		printf_s("DEF: ");
-		scanf_s("%d", &cI.def);
+		std::cin >> cI.def;
 		printf_s("SPD: ");
-		scanf_s("%d", &cI.spd);
+		std::cin >> cI.spd;
 		printf_s("\n");
 
 		charactersCreated++;
 		player->CreateCharacter(cI);
-		cI.Reset();
+			cI.Reset();
 
 		while (characterChoice != 'y' && characterChoice != 'n' && charactersCreated < 3)
 		{
@@ -64,7 +63,7 @@ void main()
 		}
 	}
 	printf_s("\n");
-	while (itemChoice != 'y')
+	while (itemChoice != 'n' && itemChoice != 'y')
 	{
 		printf_s("\Does your party have any items? (y/n)  ");
 		std::cin >> itemChoice;
@@ -104,6 +103,7 @@ void main()
 	battles.at(0)->GetEnemy()->CreateCharacter(cI);
 	cI = { "Enemy 3", 10, 2, 1, 2 };
 	battles.at(0)->GetEnemy()->CreateCharacter(cI);
+	battles.at(0)->GetEnemy()->GetCharacterAt(2);
 	// --------------------------------------------------
 
 
@@ -124,12 +124,18 @@ void main()
 			{
 				printf_s("%d.- %s\n", i + 1, battles.at(i)->GetName().c_str());
 			}
+			printf_s("%d.- Exit\n", (int)battles.size() + 1);
 			scanf_s("%d", &battleChoice);
-
-			if (battleChoice > battles.size() || battleChoice == 0)
+			
+			if (battleChoice > (battles.size() + 1) || battleChoice == 0)
 			{
 				battleChoice = 0;
 				e = true;
+			}
+			if (battleChoice == battles.size() + 1)
+			{
+				battleHasFinished = true;
+				emulatorEnd = true;
 			}
 		}
 		// --------------------------------------------------
@@ -138,8 +144,10 @@ void main()
 
 		// ----- BATTLE EMULATION -----
 		battleChoice--;
-		int starter = CalculateStarter(battles.at(battleChoice));
-		do {
+		int starter;
+		if(!battleHasFinished)
+			starter = CalculateStarter(battles.at(battleChoice));
+		while (!battleHasFinished) {
 			system("cls");
 
 			// ----- DRAW TEAMS -----
@@ -224,6 +232,7 @@ void main()
 				{
 					printf("%d ", i + 1);
 				}
+				printf(")  ");
 				while (attacker <= 0 || attacker > battles.at(battleChoice)->GetPlayer()->GetCharacters().size() + 1)
 				{
 					std::cin >> attacker;
@@ -236,7 +245,7 @@ void main()
 				}
 				printf(")  ");
 				int target = 0;
-				while (target <= 0 || target > battles.at(battleChoice)->GetPlayer()->GetCharacters().size() + 1)
+				while (target <= 0 || target > battles.at(battleChoice)->GetEnemy()->GetCharacters().size() + 1)
 				{
 					std::cin >> target;
 				}
@@ -247,24 +256,32 @@ void main()
 			case 2: // Use Object
 			{
 				int obj = 0;
-				printf("\n Choose what object to use: ");
-				while (obj <= 0 || obj > battles.at(battleChoice)->GetPlayer()->GetObjects().size() + 1)
+
+				if (battles.at(battleChoice)->GetPlayer()->GetObjects().size() == 0)
 				{
-					std::cin >> obj;
+					printf("You have no objects in your inventory.\n");
 				}
-				printf("Object seleted: (%d) %s", obj, battles.at(battleChoice)->GetPlayer()->GetObjects().at(obj - 1)->GetName().c_str());
-				printf("Select a target: ( ");
-				for (int i = 0; i < battles.at(battleChoice)->GetPlayer()->GetCharacters().size(); i++)
-				{
-					printf("%d ", i + 1);
+				else {
+					printf("\n Choose what object to use: ");
+					while (obj <= 0 || obj > battles.at(battleChoice)->GetPlayer()->GetObjects().size() + 1)
+					{
+						std::cin >> obj;
+					}
+					printf("Object seleted: (%d) %s", obj, battles.at(battleChoice)->GetPlayer()->GetObjects().at(obj - 1)->GetName().c_str());
+					printf("Select a target: ( ");
+					for (int i = 0; i < battles.at(battleChoice)->GetPlayer()->GetCharacters().size(); i++)
+					{
+						printf("%d ", i + 1);
+					}
+					printf(")  ");
+					int target = 0;
+					while (target <= 0 || target > battles.at(battleChoice)->GetPlayer()->GetCharacters().size())
+					{
+						std::cin >> target;
+					}
+					battles.at(battleChoice)->GetPlayer()->GetCharacterAt(target - 1)->ApplyEffect(battles.at(battleChoice)->GetPlayer()->GetObjects().at(obj - 1)->GetEffect());
+					battles.at(battleChoice)->GetPlayer()->RemoveObject(obj - 1);
 				}
-				printf(")  ");
-				int target = 0;
-				while (target <= 0 || target > battles.at(battleChoice)->GetPlayer()->GetCharacters().size())
-				{
-					std::cin >> target;
-				}
-				battles.at(battleChoice)->GetPlayer()->GetCharacterAt(target - 1)->ApplyEffect(battles.at(battleChoice)->GetPlayer()->GetObjects().at(obj - 1)->GetEffect());
 
 				break;
 			}
@@ -279,13 +296,14 @@ void main()
 				break;
 			}
 			// -------------------------
-
-		} while (!battleHasFinished);
+		}
 		// --------------------------------------------------
 		
-		
-		battles.at(battleChoice)->GetPlayer()->ResetPlayer();
-		battles.at(battleChoice)->GetEnemy()->ResetPlayer();
+		if (!emulatorEnd)
+		{
+			battles.at(battleChoice)->GetPlayer()->ResetPlayer();
+			battles.at(battleChoice)->GetEnemy()->ResetPlayer();
+		}
 		system("cls");
 		while (characterChoice != 'y' && characterChoice != 'n')
 		{
@@ -302,8 +320,6 @@ void main()
 		}
 
 	} while (!emulatorEnd);
-
-	system("pause");
 }
 
 

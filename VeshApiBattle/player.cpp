@@ -34,3 +34,7 @@ void Player::AddObject(Object* o)
 	objects.push_back(o);
 	creationObjects.push_back(o);
 }
+void Player::RemoveObject(int i)
+{
+	objects.erase(objects.begin() + i);
+}

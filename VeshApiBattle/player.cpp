@@ -21,6 +21,7 @@ void Player::CreateCharacter(CharacterInfo cI)
 void Player::AddCharacter(Character* c)
 {
 	characters.push_back(c);
+	creationCharacters.push_back(c);
 }
 
 void Player::CreateObject(int id)

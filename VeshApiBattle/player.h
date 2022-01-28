@@ -16,7 +16,10 @@ public:
 	void CreateObject(int id);
 	void RemoveObject(int i);
 
-	void ResetPlayer() { characters = creationCharacters; objects = creationObjects; };
+	void ResetPlayer() {
+		characters = creationCharacters;
+		objects = creationObjects;
+	};
 
 	// Getters
 	Character* GetCharacterAt(int i) { return characters.at(i); };

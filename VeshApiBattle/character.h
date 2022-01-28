@@ -42,10 +42,10 @@ public:
 
 	// Getters
 	std::string GetName() { return cInfo.name; };
-	int GetHP() { return cInfo.hp; };
-	int GetATK() { return cInfo.atk; };
-	int GetDEF() { return cInfo.def; };
-	int GetSPD() { return cInfo.spd; };
+	int GetHP() { return (int)cInfo.hp; };
+	int GetATK() { return (int)cInfo.atk; };
+	int GetDEF() { return (int)cInfo.def; };
+	int GetSPD() { return (int)cInfo.spd; };
 
 	// Setters
 	void ApplyEffect(float4 effect)
@@ -57,15 +57,17 @@ public:
 	}
 	void ReceiveDamage(int dmg)
 	{
-		dmg -= cInfo.def;
+		dmg -= (int)cInfo.def;
 		if (dmg > 0)
-			cInfo.hp -= dmg;
+			cInfo.hp -= (float)dmg;
+		if (cInfo.hp < 0)
+			cInfo.hp = 0;
 	}
 	void SetName(std::string n) { cInfo.name = n; };
-	void SetHP(int v) { cInfo.hp = v; };
-	void SetATK(int v) { cInfo.atk = v; };
-	void SetDEF(int v) { cInfo.def = v; };
-	void SetSPD(int v) { cInfo.spd = v; };
+	void SetHP(int v) { cInfo.hp = (float)v; };
+	void SetATK(int v) { cInfo.atk = (float)v; };
+	void SetDEF(int v) { cInfo.def = (float)v; };
+	void SetSPD(int v) { cInfo.spd = (float)v; };
 
 public:
 

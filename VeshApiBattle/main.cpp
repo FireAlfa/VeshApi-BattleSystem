@@ -148,6 +148,8 @@ int main()
 		battleChoice--;
 		int starter, turn = 0;
 		bool enemyAttacked = false;
+		float2 playerAttacksEff;
+		float2 aiAttacksEff;
 		if (!battleHasFinished)
 		{
 			starter = CalculateStarter(battles.at(battleChoice));
@@ -234,7 +236,7 @@ int main()
 					{
 						std::cin >> target;
 					}
-					enemy->GetCharacterAt(target - 1)->ReceiveDamage(player->GetCharacterAt(attacker - 1)->GetATK());
+					playerAttacksEff = enemy->GetCharacterAt(target - 1)->ReceiveDamage(player->GetCharacterAt(attacker - 1)->GetATK());
 
 					turn++;
 					break;
@@ -284,7 +286,7 @@ int main()
 			}
 			else
 			{ // IA Actions
-				player->GetCharacterAt(randomTarget)->ReceiveDamage(enemy->GetCharacterAt(randomAttacker)->GetATK());
+				playerAttacksEff = player->GetCharacterAt(randomTarget)->ReceiveDamage(enemy->GetCharacterAt(randomAttacker)->GetATK());
 				enemyAttacked = true;
 				turn++;
 			}

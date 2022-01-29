@@ -57,9 +57,23 @@ public:
 	}
 	void ReceiveDamage(int dmg)
 	{
-		dmg -= (int)cInfo.def;
+		int miss = rand() % 10;
+		int crit = rand() % 20;
+		int block = rand() % 20;
+		int blunder = rand() % 20;
+
+		if (miss == 0 || block == 0)
+			dmg = 0;
+
+		if (crit == 0)
+			dmg = (float)dmg + 0.5f * (float)dmg;
+
+		if (blunder != 0)
+			dmg -= (int)cInfo.def;
+
 		if (dmg > 0)
-			cInfo.hp -= (float)dmg;
+				cInfo.hp -= (float)dmg;
+
 		if (cInfo.hp < 0)
 			cInfo.hp = 0;
 	}

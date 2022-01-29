@@ -34,11 +34,8 @@ class Character
 {
 public:
 
-	Character(CharacterInfo _cInfo)
-	{
-		cInfo = _cInfo;
-	}
-	~Character() {}
+	Character(CharacterInfo _cInfo);
+	~Character();
 
 	// Getters
 	std::string GetName() { return cInfo.name; };
@@ -48,35 +45,8 @@ public:
 	int GetSPD() { return (int)cInfo.spd; };
 
 	// Setters
-	void ApplyEffect(float4 effect)
-	{
-		cInfo.hp += (int)effect.x;
-		cInfo.atk += (int)effect.y;
-		cInfo.def += (int)effect.z;
-		cInfo.spd += (int)effect.w;
-	}
-	void ReceiveDamage(int dmg)
-	{
-		int miss = rand() % 10;
-		int crit = rand() % 20;
-		int block = rand() % 20;
-		int blunder = rand() % 20;
-
-		if (miss == 0 || block == 0)
-			dmg = 0;
-
-		if (crit == 0)
-			dmg = (float)dmg + 0.5f * (float)dmg;
-
-		if (blunder != 0)
-			dmg -= (int)cInfo.def;
-
-		if (dmg > 0)
-				cInfo.hp -= (float)dmg;
-
-		if (cInfo.hp < 0)
-			cInfo.hp = 0;
-	}
+	void ApplyEffect(float4 effect);
+	float2 ReceiveDamage(int dmg);
 	void SetName(std::string n) { cInfo.name = n; };
 	void SetHP(int v) { cInfo.hp = (float)v; };
 	void SetATK(int v) { cInfo.atk = (float)v; };
